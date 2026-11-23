@@ -1,6 +1,7 @@
 import express from 'express';
 import 'dotenv/config';
 import supabase from './config/supabaseClient.js';
+import createDeleteWorkoutHandler from './routes/deleteWorkout.js';
 
 const app = express();
 app.use(express.json());
@@ -170,6 +171,12 @@ app.get('/api/stats/personal-bests', async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+
+// Feature 5: Delete a Workout
+app.delete('/api/workouts/:id',
+    createDeleteWorkoutHandler(supabase, isValidUuid)
+);
+
 // json 404 handler
 app.use((req, res) => {
     res.status(404).json({ error: 'route not found' });
